@@ -1,11 +1,10 @@
+const yargs = require('yargs');
+const notes = require('./notes.js');
 /*
     - core modules
     - npm packages
     - custom files
 */
-const chalk = require('chalk');
-const yargs = require('yargs');
-const notes = require('./notes.js');
 
 // Customize yargs version
 yargs.version('1.1.0');
@@ -17,7 +16,7 @@ yargs.command({
   builder: {
     title: {
       describe: 'Note title', // description of argument to be passed
-      demandOption: true, // require an argument to be passed from cl
+      demandOption: true, // require an argument to be passed from command line
       type: 'string', // must be of type string (can be empty)
     },
     body: {
@@ -56,14 +55,20 @@ yargs.command({
   },
 });
 
-// Create readd command
+// Create read command
 yargs.command({
   command: 'read',
   describe: 'Reading the note',
-  handler() {
-    console.log('Reading a note!');
+  builder: {
+    title: {
+      describe: 'Note title',
+      demandOption: true,
+      type: 'string',
+    },
+  },
+  handler(argv) {
+    notes.readNote(argv.title);
   },
 });
 
 yargs.parse(); // parses the argument with all config details provided
-//console.log(yargs.argv);
